@@ -4,21 +4,18 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import type { DataPost } from "../../types/DataPost";
 import { useState } from "react";
 import DeleteModal from "../DeleteModal/DeleteModal";
+import EditModal from "../EditModal/EditModal";
 
 interface PostItemProps {
   post: DataPost;
   onRefresh: () => void;
-  onEditClick: (post: DataPost) => void;
 }
 
-export default function PostItem({
-  post,
-  onRefresh,
-  onEditClick,
-}: PostItemProps) {
+export default function PostItem({ post, onRefresh }: PostItemProps) {
   const loggedUser = useUserStore((state) => state.username);
   const isMyPost = post.username === loggedUser;
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   return (
     <article className="overflow-hidden rounded-2xl border border-[#CCCCCC] bg-white">
@@ -37,7 +34,7 @@ export default function PostItem({
               <FiTrash2 size={18} />
             </button>
             <button
-              onClick={() => onEditClick(post)}
+              onClick={() => setIsEditOpen(true)}
               className="transition-transform hover:scale-110"
               title="Edit post"
             >
@@ -64,6 +61,12 @@ export default function PostItem({
         postId={post.id}
         open={isDeleteOpen}
         onOpenChange={setIsDeleteOpen}
+        onSuccess={onRefresh}
+      />
+      <EditModal
+        post={post}
+        open={isEditOpen}
+        onOpenChange={setIsEditOpen}
         onSuccess={onRefresh}
       />
     </article>

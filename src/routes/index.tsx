@@ -46,12 +46,7 @@ function RouteComponent() {
               <p className="text-center text-gray-500">Loading posts...</p>
             ) : (
               posts.map((post) => (
-                <PostItem
-                  key={post.id}
-                  post={post}
-                  onRefresh={fetchPosts}
-                  onEditClick={(post) => console.log("Editar", post)}
-                />
+                <PostItem key={post.id} post={post} onRefresh={fetchPosts} />
               ))
             )}
           </div>
