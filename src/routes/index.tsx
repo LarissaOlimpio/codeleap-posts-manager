@@ -1,9 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import PostForm from "../components/PostForm/postForm";
+import PostItem from "../components/PostItem.tsx/PostItem";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
+const mockPosts = [
+  {
+    id: 1,
+    username: "victor",
+    title: "My first post",
+    content: "Hello world",
+    created_datetime: "2023-10-25T10:00:00Z",
+  },
+];
 
 function RouteComponent() {
   return (
@@ -15,6 +25,11 @@ function RouteComponent() {
 
         <main className="flex flex-col gap-6 p-6">
           <PostForm />
+          <div className="flex flex-col gap-6">
+            {mockPosts.map((post) => (
+              <PostItem key={post.id} post={post} />
+            ))}
+          </div>
         </main>
       </div>
     </div>
