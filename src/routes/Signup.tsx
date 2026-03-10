@@ -1,13 +1,23 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useUserStore } from "../store/useUserStore";
 
-export const Route = createFileRoute("/Signup")({
+export const Route = createFileRoute("/signup")({
   component: SignupComponent,
 });
 
 function SignupComponent() {
-  const [username, setUsername] = useState("");
-  const isButtonDisabled = username.trim().length === 0;
+  const [inputValue, setInputValue] = useState("");
+  const isButtonDisabled = inputValue.trim().length === 0;
+  const setUserName = useUserStore((state) => state.setUserName);
+  const navigate = useNavigate();
+
+  const handleEnter = () => {
+    if (inputValue.trim()) {
+      setUserName(inputValue.trim());
+      navigate({ to: "/" });
+    }
+  };
 
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-[#DDDDDD] font-sans">
@@ -24,8 +34,8 @@ function SignupComponent() {
             id="username"
             type="text"
             placeholder="John doe"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
             className="w-full rounded-lg border border-[#777777] px-3 py-2 placeholder:text-[#CCCCCC] focus:border-black focus:outline-none"
           />
         </div>
@@ -33,6 +43,7 @@ function SignupComponent() {
         <div className="mt-6 flex justify-end">
           <button
             disabled={isButtonDisabled}
+            onClick={handleEnter}
             className={`h-8 w-27.75 rounded-md text-[16px] font-bold text-white transition-all ${
               isButtonDisabled
                 ? "cursor-not-allowed bg-[#ced8f7]"
