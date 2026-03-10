@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import PostForm from "../components/PostForm/postForm";
+import PostForm from "../components/PostForm/PostCreateForm";
 import PostItem from "../components/PostItem.tsx/PostItem";
 
 export const Route = createFileRoute("/")({
@@ -24,7 +24,11 @@ function RouteComponent() {
         </header>
 
         <main className="flex flex-col gap-6 p-6">
-          <PostForm />
+          <PostForm
+            onSuccess={() => {
+              console.log("Post created successfully!");
+            }}
+          />
           <div className="flex flex-col gap-6">
             {mockPosts.map((post) => (
               <PostItem key={post.id} post={post} />
