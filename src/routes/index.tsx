@@ -49,7 +49,7 @@ function RouteComponent() {
                 <PostItem
                   key={post.id}
                   post={post}
-                  onDeleteClick={(id) => console.log("Deletar", id)}
+                  onRefresh={fetchPosts}
                   onEditClick={(post) => console.log("Editar", post)}
                 />
               ))

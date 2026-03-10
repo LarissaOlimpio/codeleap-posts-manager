@@ -2,20 +2,23 @@ import { useUserStore } from "../../store/useUserStore";
 import { formatDistanceToNow } from "date-fns";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import type { DataPost } from "../../types/DataPost";
+import { useState } from "react";
+import DeleteModal from "../DeleteModal/DeleteModal";
 
 interface PostItemProps {
   post: DataPost;
-  onDeleteClick: (id: number) => void;
+  onRefresh: () => void;
   onEditClick: (post: DataPost) => void;
 }
 
 export default function PostItem({
   post,
-  onDeleteClick,
+  onRefresh,
   onEditClick,
 }: PostItemProps) {
   const loggedUser = useUserStore((state) => state.username);
   const isMyPost = post.username === loggedUser;
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   return (
     <article className="overflow-hidden rounded-2xl border border-[#CCCCCC] bg-white">
@@ -27,7 +30,7 @@ export default function PostItem({
         {isMyPost && (
           <div className="flex gap-6">
             <button
-              onClick={() => onDeleteClick(post.id)}
+              onClick={() => setIsDeleteOpen(true)}
               className="transition-transform hover:scale-110"
               title="Delete post"
             >
@@ -57,6 +60,12 @@ export default function PostItem({
           {post.content}
         </p>
       </div>
+      <DeleteModal
+        postId={post.id}
+        open={isDeleteOpen}
+        onOpenChange={setIsDeleteOpen}
+        onSuccess={onRefresh}
+      />
     </article>
   );
 }
