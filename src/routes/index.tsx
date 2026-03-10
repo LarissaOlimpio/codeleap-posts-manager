@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import PostForm from "../components/PostForm/PostCreateForm";
 import PostItem from "../components/PostItem.tsx/PostItem";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import type { DataPost } from "../types/DataPost";
 
 export const Route = createFileRoute("/")({
@@ -10,15 +10,41 @@ export const Route = createFileRoute("/")({
 
 function RouteComponent() {
   const [posts, setPosts] = useState<DataPost[]>([]);
+  const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchPosts = async () => {
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastPostElementRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && nextUrl) {
+          fetchPosts(nextUrl, true);
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [isLoading, nextUrl],
+  );
+
+  const fetchPosts = async (
+    url = "https://dev.codeleap.co.uk/careers/",
+    isNextPage = false,
+  ) => {
+    setIsLoading(true);
     try {
-      const response = await fetch("https://dev.codeleap.co.uk/careers/");
+      const response = await fetch(url);
       const data = await response.json();
-      setPosts(data.results);
+
+      setPosts((prev) =>
+        isNextPage ? [...prev, ...data.results] : data.results,
+      );
+      setNextUrl(data.next);
     } catch (error) {
-      console.error("Erro ao buscar posts:", error);
+      console.error("Error fetching posts:", error);
     } finally {
       setIsLoading(false);
     }
@@ -42,14 +68,27 @@ function RouteComponent() {
           />
 
           <div className="flex flex-col gap-6">
-            {isLoading ? (
-              <p className="text-center text-gray-500">Loading posts...</p>
-            ) : (
-              posts.map((post) => (
-                <PostItem key={post.id} post={post} onRefresh={fetchPosts} />
-              ))
-            )}
+            {posts.map((post, index) => {
+              if (posts.length === index + 1) {
+                return (
+                  <div ref={lastPostElementRef} key={post.id}>
+                    <PostItem post={post} onRefresh={() => fetchPosts()} />
+                  </div>
+                );
+              }
+              return (
+                <PostItem
+                  key={post.id}
+                  post={post}
+                  onRefresh={() => fetchPosts()}
+                />
+              );
+            })}
           </div>
+
+          {isLoading && (
+            <p className="py-4 text-center">Loading more posts...</p>
+          )}
         </main>
       </div>
     </div>
