@@ -1,0 +1,15 @@
+# Version control
+.git
+.svn
+.hg
+
+# Dependencies
+node_modules
+
+# Build output
+dist
+build
+coverage
+
+# Auto-generated files
+**/routeTree.gen.ts
