@@ -1,10 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import PostForm from "../components/PostCreateForm/PostCreateForm";
 import PostItem from "../components/PostItem.tsx/PostItem";
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { DataPost } from "../types/DataPost";
+import { useUserStore } from "../store/useUserStore";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: () => {
+    const { username } = useUserStore.getState();
+    if (!username) {
+      throw redirect({ to: "/signup" });
+    }
+  },
   component: RouteComponent,
 });
 
