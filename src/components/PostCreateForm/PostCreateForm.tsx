@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useUserStore } from "../../store/useUserStore";
 import { usePostMutations } from "../../hooks/usePostMutations";
+import { MentionsInput, Mention } from "react-mentions";
+import { usePosts } from "../../hooks/usePost";
+import styles from "./PostCreateForm.styles.module.css";
 
 interface PostData {
   title: string;
@@ -49,6 +52,22 @@ export default function PostCreateForm() {
       },
     );
   };
+  const handleContentChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, content: value }));
+  };
+
+  const { data } = usePosts();
+  const users =
+    data?.pages
+      .flatMap((p) => p.results)
+      .map((p) => ({
+        id: p.username,
+        display: p.username,
+      }))
+      .filter(
+        (value, index, self) =>
+          index === self.findIndex((t) => t.id === value.id),
+      ) || [];
 
   return (
     <section className="flex flex-col gap-6 rounded-2xl border border-[#CCCCCC] bg-white p-6">
@@ -68,17 +87,23 @@ export default function PostCreateForm() {
 
       <div className="flex flex-col gap-2">
         <label className="text-[16px] text-black">Content</label>
-        <textarea
-          name="content"
-          placeholder="Content here"
-          rows={3}
-          className="w-full resize-none rounded-lg border border-[#777777] p-2 focus:outline-[#7695EC]"
-          value={formData.content}
-          onChange={handleChange}
-          disabled={isLoading}
-        />
-      </div>
 
+        <MentionsInput
+          value={formData.content ?? ""}
+          onChange={(_, newValue) => handleContentChange(newValue)}
+          placeholder="Write something... use @ to mention someone"
+          disabled={isLoading}
+          classNames={styles}
+        >
+          <Mention
+            trigger="@"
+            data={users}
+            markup="@__display__"
+            displayTransform={(display) => `@${display}`}
+            className={styles.mention}
+          />
+        </MentionsInput>
+      </div>
       <div className="flex justify-end">
         <button
           onClick={handleSubmit}
