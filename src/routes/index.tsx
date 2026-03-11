@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import PostForm from "../components/PostForm/PostCreateForm";
+import PostForm from "../components/PostCreateForm/PostCreateForm";
 import PostItem from "../components/PostItem.tsx/PostItem";
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { DataPost } from "../types/DataPost";

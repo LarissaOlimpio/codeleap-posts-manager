@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useUserStore } from "../../store/useUserStore";
+import { postService } from "../../service/api";
 
 interface PostData {
   title: string;
@@ -31,31 +32,19 @@ export default function PostCreateForm({ onSuccess }: PostCreateFormProps) {
 
   const handleSubmit = async () => {
     setIsLoading(true);
+    const success = await postService.create(
+      username,
+      formData.title,
+      formData.content,
+    );
 
-    try {
-      const response = await fetch("https://dev.codeleap.co.uk/careers/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          title: formData.title,
-          content: formData.content,
-        }),
-      });
-
-      if (response.ok) {
-        setFormData({ title: "", content: "" });
-        onSuccess();
-      } else {
-        alert("Error creating post. Please try again.");
-      }
-    } catch (error) {
-      console.error("Network error:", error);
-    } finally {
-      setIsLoading(false);
+    if (success) {
+      setFormData({ title: "", content: "" });
+      onSuccess();
+    } else {
+      alert("Error!");
     }
+    setIsLoading(false);
   };
 
   return (
