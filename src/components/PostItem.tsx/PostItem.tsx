@@ -63,7 +63,7 @@ export default function PostItem({ post }: PostItemProps) {
       </header>
 
       <div className="flex flex-col gap-4 p-6">
-        <div className="flex justify-between text-[18px] text-[#777777]">
+        <div className="flex flex-col gap-1 text-[18px] text-[#777777] sm:flex-row sm:items-center sm:justify-between">
           <span className="font-bold text-[#777777]">@{post.username}</span>
           <span>
             {formatDistanceToNow(new Date(post.created_datetime), {
