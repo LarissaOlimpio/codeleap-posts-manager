@@ -55,7 +55,7 @@ export default function PostCreateForm({ onSuccess }: PostCreateFormProps) {
         <label className="text-[16px] text-black">Title</label>
         <input
           name="title"
-          placeholder="Hello world"
+          placeholder="Title"
           className="w-full rounded-lg border border-[#777777] p-2 focus:outline-[#7695EC]"
           value={formData.title}
           onChange={handleChange}

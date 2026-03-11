@@ -74,7 +74,7 @@ export default function EditModal({
                 name="title"
                 value={formData.title}
                 onChange={(e) => handleChange("title", e.target.value)}
-                placeholder="Hello world"
+                placeholder="Title"
                 className="w-full rounded-lg border border-[#777777] p-2 focus:outline-[#7695EC]"
               />
             </div>
