@@ -1,73 +1,62 @@
-# React + TypeScript + Vite
+# CodeLeap Posts Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fully functional CRUD application developed as a technical challenge for CodeLeap. This project allows users to sign in, create, edit, delete, and view posts in a dynamic feed featuring infinite scrolling.
 
-Currently, two official plugins are available:
+## 🛠️ Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project was built using web development standards:
 
-## React Compiler
+* **React 18** with **TypeScript**: Ensuring robust type safety and component-based UI.
+* **TanStack Router**: For type-safe routing and seamless navigation.
+* **Zustand**: A lightweight state management solution for global user session control.
+* **Radix UI**: High-quality primitives for accessible Modals (Dialog) and Confirmation Alerts (AlertDialog).
+* **Tailwind CSS**: Utility-first CSS for a responsive and "pixel-perfect" design.
+* **Intersection Observer API**: Native implementation for a high-performance Infinite Scroll.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## ✨ Key Features
 
-## Expanding the ESLint configuration
+* **Authentication Flow**: A dedicated signup screen where the username is persisted globally via Zustand.
+* **Full CRUD Implementation**:
+    * **Create**: Add new posts with immediate feed updates and loading states.
+    * **Read**: Real-time post listing fetched from a REST API.
+    * **Update**: Edit titles and content through an accessible Modal interface.
+    * **Delete**: Secure deletion with a confirmation dialog to prevent accidental data loss.
+* **Infinite Scrolling**: Automatic loading of subsequent pages as the user scrolls, providing a smooth UX.
+* **UI Feedback**: Integrated Spinners (Radix Themes) and disabled button states to guide the user during asynchronous actions.
+* **Clean Code Architecture**: Logic separation using a **Service Layer** for API calls and custom hooks for observers.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Follow these steps to run the project locally:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/LarissaOlimpio/codeleap-posts-manager.git](https://github.com/your-username/codeleap-network.git)
+    ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+4.  **Open in your browser:**
+    Navigate to `http://localhost:5173`
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🏗️ Project Structure
+
+```text
+src/
+ ├── components/     # UI Components (Buttons, Modals) and Business Logic
+ ├── routes/         # Route definitions and page views (TanStack Router)
+ ├── services/       # API Layer (postService.ts) for centralized fetch logic
+ ├── store/          # State management (Zustand)
+ ├── types/          # TypeScript Interfaces and API response definitions
+ └── utils/          # Utility functions for date formatting 
+
+ ```
+Developed with ❤️ by Larissa Olimpio
