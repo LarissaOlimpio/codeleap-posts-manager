@@ -16,19 +16,30 @@ export default function EditModal({
   onOpenChange,
   onSuccess,
 }: EditModalProps) {
-  const [title, setTitle] = useState(post.title);
-  const [content, setContent] = useState(post.content);
+  const [formData, setFormData] = useState({
+    title: post.title,
+    content: post.content,
+  });
   const [isLoading, setIsLoading] = useState(false);
-  const isButtonDisabled = !title.trim() || !content.trim() || isLoading;
+  const isButtonDisabled =
+    !formData.title.trim() || !formData.content.trim() || isLoading;
   useEffect(() => {
-    setTitle(post.title);
-    setContent(post.content);
-  }, [post]);
+    if (open) {
+      setFormData({
+        title: post.title,
+        content: post.content,
+      });
+    }
+  }, [post, open]);
 
   const handleSave = async () => {
     setIsLoading(true);
     try {
-      const success = await postService.update(post.id, title, content);
+      const success = await postService.update(
+        post.id,
+        formData.title,
+        formData.content,
+      );
 
       if (success) {
         onSuccess();
@@ -39,6 +50,12 @@ export default function EditModal({
     } finally {
       setIsLoading(false);
     }
+  };
+  const handleChange = (
+    name: keyof typeof formData,
+    value: string | number,
+  ) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -54,8 +71,9 @@ export default function EditModal({
             <div className="flex flex-col gap-2">
               <label className="text-[16px] text-black">Title</label>
               <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                name="title"
+                value={formData.title}
+                onChange={(e) => handleChange("content", e.target.value)}
                 placeholder="Hello world"
                 className="w-full rounded-lg border border-[#777777] p-2 focus:outline-[#7695EC]"
               />
@@ -64,8 +82,9 @@ export default function EditModal({
             <div className="flex flex-col gap-2">
               <label className="text-[16px] text-black">Content</label>
               <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
+                name="content"
+                value={formData.content}
+                onChange={(e) => handleChange("content", e.target.value)}
                 placeholder="Content here"
                 rows={3}
                 className="w-full resize-none rounded-lg border border-[#777777] p-2 focus:outline-[#7695EC]"
