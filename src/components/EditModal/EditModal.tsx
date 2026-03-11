@@ -1,6 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState, useEffect } from "react";
 import type { DataPost } from "../../types/DataPost";
+import { postService } from "../../service/api";
 
 interface EditModalProps {
   post: DataPost;
@@ -18,32 +19,23 @@ export default function EditModal({
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
   const [isLoading, setIsLoading] = useState(false);
-
+  const isButtonDisabled = !title.trim() || !content.trim() || isLoading;
   useEffect(() => {
     setTitle(post.title);
     setContent(post.content);
   }, [post]);
 
-  const isButtonDisabled = !title.trim() || !content.trim() || isLoading;
-
   const handleSave = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `https://dev.codeleap.co.uk/careers/${post.id}/`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title, content }),
-        },
-      );
+      const success = await postService.update(post.id, title, content);
 
-      if (response.ok) {
+      if (success) {
         onSuccess();
         onOpenChange(false);
       }
     } catch (error) {
-      console.error("Error updating post:", error);
+      console.error("Update error:", error);
     } finally {
       setIsLoading(false);
     }
