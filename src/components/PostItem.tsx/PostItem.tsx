@@ -10,12 +10,12 @@ import { useSocialStore } from "../../store/useSocialStore";
 
 interface PostItemProps {
   post: DataPost;
-  onRefresh: () => void;
 }
 
-export default function PostItem({ post, onRefresh }: PostItemProps) {
+export default function PostItem({ post }: PostItemProps) {
   const loggedUser = useUserStore((state) => state.username);
   const isMyPost = post.username === loggedUser;
+
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [commentText, setCommentText] = useState("");
@@ -34,6 +34,7 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
       setCommentText("");
     }
   };
+
   return (
     <article className="overflow-hidden rounded-2xl border border-[#CCCCCC] bg-white">
       <header className="flex h-17.5 items-center justify-between bg-[#7695EC] px-6 text-white">
@@ -60,6 +61,7 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
           </div>
         )}
       </header>
+
       <div className="flex flex-col gap-4 p-6">
         <div className="flex justify-between text-[18px] text-[#777777]">
           <span className="font-bold text-[#777777]">@{post.username}</span>
@@ -73,6 +75,7 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
         <p className="text-[18px] leading-tight whitespace-pre-wrap text-black">
           {post.content}
         </p>
+
         <div className="flex items-center justify-between text-[14px] text-[#777777]">
           <button
             type="button"
@@ -80,12 +83,10 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
             className={`flex items-center gap-2 font-bold transition-transform hover:scale-105 ${
               isLikedByUser ? "text-[#7695EC]" : "text-[#999999]"
             }`}
-            title={isLikedByUser ? "Unlike post" : "Like post"}
           >
             {isLikedByUser ? <FaHeart size={16} /> : <FiHeart size={16} />}
             <span>
-              {likes.length} like
-              {likes.length === 1 ? "" : "s"}
+              {likes.length} {likes.length === 1 ? "like" : "likes"}
             </span>
           </button>
         </div>
@@ -117,7 +118,7 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
               placeholder={
                 loggedUser ? "Write a comment..." : "Sign in to comment"
               }
-              className="min-h-20 rounded-lg border border-[#CCCCCC] p-3 text-[14px]"
+              className="min-h-20 rounded-lg border border-[#CCCCCC] p-3 text-[14px] focus:border-transparent focus:outline-[#7695EC]"
               disabled={!loggedUser}
             />
             <button
@@ -131,17 +132,17 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
           </div>
         </div>
       </div>
+
       <DeleteModal
         postId={post.id}
         open={isDeleteOpen}
         onOpenChange={setIsDeleteOpen}
-        onSuccess={onRefresh}
       />
       <EditModal
+        key={post.id}
         post={post}
         open={isEditOpen}
         onOpenChange={setIsEditOpen}
-        onSuccess={onRefresh}
       />
     </article>
   );

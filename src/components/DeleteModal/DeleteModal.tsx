@@ -1,32 +1,31 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { postService } from "../../service/api";
+import { usePostMutations } from "../../hooks/usePostMutations";
 
 interface DeleteModalProps {
   postId: number;
-  onSuccess: () => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 export default function DeleteModal({
   postId,
-  onSuccess,
   open,
   onOpenChange,
 }: DeleteModalProps) {
-  const handleDelete = async () => {
-    try {
-      const success = await postService.delete(postId);
+  const { deleteMutation } = usePostMutations();
 
-      if (success) {
-        onSuccess();
+  const handleDelete = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    deleteMutation.mutate(postId, {
+      onSuccess: () => {
         onOpenChange(false);
-      } else {
-        alert("Could not delete the post.");
-      }
-    } catch (error) {
-      console.error("Delete error:", error);
-    }
+      },
+      onError: (error) => {
+        console.error("Delete error:", error);
+        alert("Could not delete the post. Please try again.");
+      },
+    });
   };
 
   return (
@@ -42,7 +41,10 @@ export default function DeleteModal({
 
           <div className="flex justify-end gap-4">
             <AlertDialog.Cancel asChild>
-              <button className="rounded-lg border border-[#999999] px-8 py-1.5 font-bold text-black transition-colors hover:bg-gray-50">
+              <button
+                className="rounded-lg border border-[#999999] px-8 py-1.5 font-bold text-black transition-colors hover:bg-gray-50 disabled:opacity-50"
+                disabled={deleteMutation.isPending}
+              >
                 Cancel
               </button>
             </AlertDialog.Cancel>
@@ -50,9 +52,10 @@ export default function DeleteModal({
             <AlertDialog.Action asChild>
               <button
                 onClick={handleDelete}
-                className="rounded-lg bg-[#FF5151] px-8 py-1.5 font-bold text-white transition-colors hover:bg-[#d43f3f]"
+                disabled={deleteMutation.isPending}
+                className="rounded-lg bg-[#FF5151] px-8 py-1.5 font-bold text-white transition-colors hover:bg-[#d43f3f] disabled:cursor-not-allowed disabled:bg-[#CCCCCC]"
               >
-                Delete
+                {deleteMutation.isPending ? "Deleting..." : "Delete"}
               </button>
             </AlertDialog.Action>
           </div>

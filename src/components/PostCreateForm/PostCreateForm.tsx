@@ -1,24 +1,23 @@
 import { useState } from "react";
 import { useUserStore } from "../../store/useUserStore";
-import { postService } from "../../service/api";
+import { usePostMutations } from "../../hooks/usePostMutations";
 
 interface PostData {
   title: string;
   content: string;
 }
 
-interface PostCreateFormProps {
-  onSuccess: () => void;
-}
-
-export default function PostCreateForm({ onSuccess }: PostCreateFormProps) {
+export default function PostCreateForm() {
   const [formData, setFormData] = useState<PostData>({
     title: "",
     content: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
 
   const username = useUserStore((state) => state.username);
+
+  const { createMutation } = usePostMutations();
+
+  const isLoading = createMutation.isPending;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -30,21 +29,25 @@ export default function PostCreateForm({ onSuccess }: PostCreateFormProps) {
   const isButtonDisabled =
     !formData.title.trim() || !formData.content.trim() || isLoading;
 
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    const success = await postService.create(
-      username,
-      formData.title,
-      formData.content,
-    );
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
 
-    if (success) {
-      setFormData({ title: "", content: "" });
-      onSuccess();
-    } else {
-      alert("Error!");
-    }
-    setIsLoading(false);
+    createMutation.mutate(
+      {
+        username,
+        title: formData.title,
+        content: formData.content,
+      },
+      {
+        onSuccess: () => {
+          setFormData({ title: "", content: "" });
+        },
+        onError: (error) => {
+          console.error("Creation error:", error);
+          alert("Failed to create post. Please try again.");
+        },
+      },
+    );
   };
 
   return (
@@ -59,6 +62,7 @@ export default function PostCreateForm({ onSuccess }: PostCreateFormProps) {
           className="w-full rounded-lg border border-[#777777] p-2 focus:outline-[#7695EC]"
           value={formData.title}
           onChange={handleChange}
+          disabled={isLoading}
         />
       </div>
 
@@ -71,6 +75,7 @@ export default function PostCreateForm({ onSuccess }: PostCreateFormProps) {
           className="w-full resize-none rounded-lg border border-[#777777] p-2 focus:outline-[#7695EC]"
           value={formData.content}
           onChange={handleChange}
+          disabled={isLoading}
         />
       </div>
 
