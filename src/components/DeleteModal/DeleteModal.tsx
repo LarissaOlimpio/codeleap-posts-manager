@@ -1,4 +1,5 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import { postService } from "../../service/api";
 
 interface DeleteModalProps {
   postId: number;
@@ -15,19 +16,16 @@ export default function DeleteModal({
 }: DeleteModalProps) {
   const handleDelete = async () => {
     try {
-      const response = await fetch(
-        `https://dev.codeleap.co.uk/careers/${postId}/`,
-        {
-          method: "DELETE",
-        },
-      );
+      const success = await postService.delete(postId);
 
-      if (response.ok) {
+      if (success) {
         onSuccess();
         onOpenChange(false);
+      } else {
+        alert("Could not delete the post.");
       }
     } catch (error) {
-      console.error("Erro ao deletar:", error);
+      console.error("Delete error:", error);
     }
   };
 
