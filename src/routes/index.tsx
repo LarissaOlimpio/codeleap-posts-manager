@@ -5,6 +5,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import type { DataPost } from "../types/DataPost";
 import { useUserStore } from "../store/useUserStore";
 import Header from "../components/Header/Header";
+import { useFilteredPosts } from "../hooks/useFilteredPosts";
+import { PostFilters } from "../components/PostFilters/PostFilters";
 
 export const Route = createFileRoute("/")({
   beforeLoad: () => {
@@ -61,6 +63,13 @@ function RouteComponent() {
   useEffect(() => {
     fetchPosts();
   }, []);
+  const {
+    searchTerm,
+    setSearchTerm,
+    sortBy,
+    setSortBy,
+    filteredAndSortedPosts,
+  } = useFilteredPosts(posts);
   return (
     <div className="flex min-h-screen justify-center bg-[#DDDDDD]">
       <div className="min-h-screen w-full max-w-200 bg-white shadow-lg">
@@ -72,9 +81,15 @@ function RouteComponent() {
               fetchPosts();
             }}
           />
+          <PostFilters
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+          />
 
           <div className="flex flex-col gap-6">
-            {posts.map((post, index) => {
+            {filteredAndSortedPosts.map((post, index) => {
               if (posts.length === index + 1) {
                 return (
                   <div ref={lastPostElementRef} key={post.id}>
