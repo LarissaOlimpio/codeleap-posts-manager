@@ -1,3 +1,4 @@
+// src/store/useUserStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -12,10 +13,12 @@ export const useUserStore = create<UserState>()(
     (set) => ({
       username: "",
       setUserName: (name) => set({ username: name }),
-      logout: () => set({ username: "" }),
+
+      logout: () => {
+        set({ username: "" });
+        localStorage.removeItem("@codeleap-user-storage");
+      },
     }),
-    {
-      name: "@codeleap:user-storage",
-    },
+    { name: "@codeleap-user-storage" },
   ),
 );

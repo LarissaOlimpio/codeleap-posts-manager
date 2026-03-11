@@ -4,6 +4,7 @@ import PostItem from "../components/PostItem.tsx/PostItem";
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { DataPost } from "../types/DataPost";
 import { useUserStore } from "../store/useUserStore";
+import Header from "../components/Header/Header";
 
 export const Route = createFileRoute("/")({
   beforeLoad: () => {
@@ -63,9 +64,7 @@ function RouteComponent() {
   return (
     <div className="flex min-h-screen justify-center bg-[#DDDDDD]">
       <div className="min-h-screen w-full max-w-200 bg-white shadow-lg">
-        <header className="flex h-20 items-center bg-[#7695EC] p-6">
-          <h1 className="text-[22px] font-bold text-white">CodeLeap Network</h1>
-        </header>
+        <Header />
 
         <main className="flex flex-col gap-6 p-6">
           <PostForm
