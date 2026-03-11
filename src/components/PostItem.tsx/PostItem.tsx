@@ -1,10 +1,12 @@
 import { useUserStore } from "../../store/useUserStore";
 import { formatDistanceToNow } from "date-fns";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiTrash2, FiHeart } from "react-icons/fi";
+import { FaHeart } from "react-icons/fa";
 import type { DataPost } from "../../types/DataPost";
 import { useState } from "react";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import EditModal from "../EditModal/EditModal";
+import fakeApi from "../../service/fakeApi";
 
 interface PostItemProps {
   post: DataPost;
@@ -16,7 +18,24 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
   const isMyPost = post.username === loggedUser;
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [postData, setPostData] = useState(() => fakeApi.getPostData(post.id));
+  const [commentText, setCommentText] = useState("");
+  const isLikedByUser = postData.likes.includes(loggedUser);
 
+  const handleToggleLike = () => {
+    if (!loggedUser) return;
+    fakeApi.toggleLike(post.id, loggedUser);
+    setPostData(fakeApi.getPostData(post.id));
+  };
+
+  const handleAddComment = () => {
+    if (!loggedUser) return;
+    const trimmedComment = commentText.trim();
+    if (!trimmedComment) return;
+    fakeApi.commentOnPost(post.id, loggedUser, trimmedComment);
+    setPostData(fakeApi.getPostData(post.id));
+    setCommentText("");
+  };
   return (
     <article className="overflow-hidden rounded-2xl border border-[#CCCCCC] bg-white">
       <header className="flex h-17.5 items-center justify-between bg-[#7695EC] px-6 text-white">
@@ -56,6 +75,63 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
         <p className="text-[18px] leading-tight whitespace-pre-wrap text-black">
           {post.content}
         </p>
+        <div className="flex items-center justify-between text-[14px] text-[#777777]">
+          <button
+            type="button"
+            onClick={handleToggleLike}
+            className={`flex items-center gap-2 font-bold transition-transform hover:scale-105 ${
+              isLikedByUser ? "text-[#7695EC]" : "text-[#999999]"
+            }`}
+            title={isLikedByUser ? "Unlike post" : "Like post"}
+          >
+            {isLikedByUser ? <FaHeart size={16} /> : <FiHeart size={16} />}
+            <span>
+              {postData.likes.length} like
+              {postData.likes.length === 1 ? "" : "s"}
+            </span>
+          </button>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <label className="text-[14px] font-bold text-[#777777]">
+            Comments
+          </label>
+          {postData.comments.length > 0 && (
+            <div className="flex flex-col gap-3 rounded-lg border border-[#EEEEEE] bg-[#FAFAFA] p-3">
+              {postData.comments.map((comment, index) => (
+                <p
+                  key={`${comment.userId}-${index}`}
+                  className="text-[14px] text-[#555555]"
+                >
+                  <span className="font-bold text-[#777777]">
+                    @{comment.userId}
+                  </span>{" "}
+                  {comment.text}
+                </p>
+              ))}
+            </div>
+          )}
+
+          <div className="flex flex-col gap-2">
+            <textarea
+              value={commentText}
+              onChange={(event) => setCommentText(event.target.value)}
+              placeholder={
+                loggedUser ? "Write a comment..." : "Sign in to comment"
+              }
+              className="min-h-20 rounded-lg border border-[#CCCCCC] p-3 text-[14px]"
+              disabled={!loggedUser}
+            />
+            <button
+              type="button"
+              onClick={handleAddComment}
+              disabled={!loggedUser || !commentText.trim()}
+              className="h-10 rounded-lg bg-[#7695EC] text-[14px] font-bold text-white transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Post comment
+            </button>
+          </div>
+        </div>
       </div>
       <DeleteModal
         postId={post.id}
