@@ -6,7 +6,7 @@ import type { DataPost } from "../../types/DataPost";
 import { useState } from "react";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import EditModal from "../EditModal/EditModal";
-import fakeApi from "../../service/fakeApi";
+import { useSocialStore } from "../../store/useSocialStore";
 
 interface PostItemProps {
   post: DataPost;
@@ -18,23 +18,21 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
   const isMyPost = post.username === loggedUser;
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [postData, setPostData] = useState(() => fakeApi.getPostData(post.id));
   const [commentText, setCommentText] = useState("");
-  const isLikedByUser = postData.likes.includes(loggedUser);
 
-  const handleToggleLike = () => {
-    if (!loggedUser) return;
-    fakeApi.toggleLike(post.id, loggedUser);
-    setPostData(fakeApi.getPostData(post.id));
-  };
+  const likes = useSocialStore((state) => state.likes[post.id]) ?? [];
+  const comments = useSocialStore((state) => state.comments[post.id]) ?? [];
+  const toggleLike = useSocialStore((state) => state.toggleLike);
+  const addComment = useSocialStore((state) => state.addComment);
+
+  const isLikedByUser = likes.includes(loggedUser);
+  const handleToggleLike = () => toggleLike(post.id, loggedUser);
 
   const handleAddComment = () => {
-    if (!loggedUser) return;
-    const trimmedComment = commentText.trim();
-    if (!trimmedComment) return;
-    fakeApi.commentOnPost(post.id, loggedUser, trimmedComment);
-    setPostData(fakeApi.getPostData(post.id));
-    setCommentText("");
+    if (commentText.trim()) {
+      addComment(post.id, loggedUser, commentText.trim());
+      setCommentText("");
+    }
   };
   return (
     <article className="overflow-hidden rounded-2xl border border-[#CCCCCC] bg-white">
@@ -86,8 +84,8 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
           >
             {isLikedByUser ? <FaHeart size={16} /> : <FiHeart size={16} />}
             <span>
-              {postData.likes.length} like
-              {postData.likes.length === 1 ? "" : "s"}
+              {likes.length} like
+              {likes.length === 1 ? "" : "s"}
             </span>
           </button>
         </div>
@@ -96,15 +94,15 @@ export default function PostItem({ post, onRefresh }: PostItemProps) {
           <label className="text-[14px] font-bold text-[#777777]">
             Comments
           </label>
-          {postData.comments.length > 0 && (
+          {comments.length > 0 && (
             <div className="flex flex-col gap-3 rounded-lg border border-[#EEEEEE] bg-[#FAFAFA] p-3">
-              {postData.comments.map((comment, index) => (
+              {comments.map((comment, index) => (
                 <p
-                  key={`${comment.userId}-${index}`}
+                  key={`${comment.username}-${index}`}
                   className="text-[14px] text-[#555555]"
                 >
                   <span className="font-bold text-[#777777]">
-                    @{comment.userId}
+                    @{comment.username}
                   </span>{" "}
                   {comment.text}
                 </p>
