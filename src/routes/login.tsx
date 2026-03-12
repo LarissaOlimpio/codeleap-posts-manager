@@ -44,7 +44,7 @@ function SignupComponent() {
           <button
             disabled={isButtonDisabled}
             onClick={handleEnter}
-            className={`h-8 w-27.75 rounded-md text-[16px] font-bold text-white transition-all ${
+            className={`h-8 w-27.75 cursor-pointer rounded-md text-[16px] font-bold text-white transition-all ${
               isButtonDisabled
                 ? "cursor-not-allowed bg-[#ced8f7]"
                 : "bg-[#7695EC] hover:bg-[#5a78d1] active:bg-[#4a65b8]"

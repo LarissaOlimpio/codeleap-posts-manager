@@ -108,7 +108,7 @@ export default function PostCreateForm() {
         <button
           onClick={handleSubmit}
           disabled={isButtonDisabled}
-          className="rounded-lg bg-[#7695EC] px-8 py-1.5 font-bold text-white transition-colors hover:bg-[#5a78d1] disabled:cursor-not-allowed disabled:bg-[#CCCCCC]"
+          className="cursor-pointer rounded-lg bg-[#7695EC] px-8 py-1.5 font-bold text-white transition-colors hover:bg-[#5a78d1] disabled:cursor-not-allowed disabled:bg-[#CCCCCC]"
         >
           {isLoading ? "Creating..." : "Create"}
         </button>

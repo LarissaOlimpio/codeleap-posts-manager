@@ -88,7 +88,7 @@ export default function EditModal({
           <div className="mt-6 flex justify-end gap-4">
             <Dialog.Close asChild>
               <button
-                className="rounded-lg border border-[#999999] px-8 py-1.5 font-bold text-black hover:bg-gray-50 disabled:opacity-50"
+                className="cursor-pointer rounded-lg border border-[#999999] px-8 py-1.5 font-bold text-black hover:bg-gray-50 disabled:opacity-50"
                 disabled={isLoading}
               >
                 Cancel
@@ -98,7 +98,7 @@ export default function EditModal({
             <button
               onClick={handleSave}
               disabled={isButtonDisabled}
-              className="rounded-lg bg-[#47B845] px-8 py-1.5 font-bold text-white transition-colors hover:bg-[#3ea33c] disabled:cursor-not-allowed disabled:bg-[#CCCCCC]"
+              className="cursor-pointer rounded-lg bg-[#47B845] px-8 py-1.5 font-bold text-white transition-colors hover:bg-[#3ea33c] disabled:cursor-not-allowed disabled:bg-[#CCCCCC]"
             >
               {isLoading ? "Saving..." : "Save"}
             </button>

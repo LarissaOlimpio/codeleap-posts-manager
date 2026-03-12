@@ -66,14 +66,14 @@ export default function PostItem({ post }: PostItemProps) {
           <div className="flex gap-6">
             <button
               onClick={() => setIsDeleteOpen(true)}
-              className="transition-transform hover:scale-110"
+              className="cursor-pointer transition-transform hover:scale-110"
               title="Delete post"
             >
               <FiTrash2 size={18} />
             </button>
             <button
               onClick={() => setIsEditOpen(true)}
-              className="transition-transform hover:scale-110"
+              className="cursor-pointer transition-transform hover:scale-110"
               title="Edit post"
             >
               <FiEdit size={18} />
@@ -98,7 +98,7 @@ export default function PostItem({ post }: PostItemProps) {
 
         <button
           onClick={handleToggleLike}
-          className={`flex w-fit items-center gap-2 font-bold transition-transform hover:scale-105 ${
+          className={`flex w-fit cursor-pointer items-center gap-2 font-bold transition-transform hover:scale-105 ${
             isLikedByUser ? "text-[#7695EC]" : "text-[#999999]"
           }`}
         >
@@ -135,13 +135,13 @@ export default function PostItem({ post }: PostItemProps) {
                       <div className="flex gap-2 text-[#524e4e]">
                         <button
                           onClick={() => startEditComment(index, comment.text)}
-                          className="hover:text-[#7695EC]"
+                          className="cursor-pointer hover:text-[#7695EC]"
                         >
                           <FiEdit size={14} />
                         </button>
                         <button
                           onClick={() => deleteComment(post.id, index)}
-                          className="hover:text-[#FF5151]"
+                          className="cursor-pointer hover:text-[#FF5151]"
                         >
                           <FiTrash2 size={14} />
                         </button>
@@ -175,7 +175,7 @@ export default function PostItem({ post }: PostItemProps) {
               {editingCommentIndex !== null && (
                 <button
                   onClick={cancelEdit}
-                  className="absolute top-2 right-2 rounded-full p-1 text-[#FF5151] hover:bg-red-50"
+                  className="absolute top-2 right-2 cursor-pointer rounded-full p-1 text-[#FF5151] hover:bg-red-50"
                   title="Cancel edit"
                 >
                   <FiX size={16} />
@@ -187,7 +187,7 @@ export default function PostItem({ post }: PostItemProps) {
               type="button"
               onClick={handleAddOrEditComment}
               disabled={!loggedUser || !commentText.trim()}
-              className="h-10 rounded-lg bg-[#7695EC] text-[14px] font-bold text-white transition-all hover:bg-[#5a78d1] disabled:cursor-not-allowed disabled:opacity-50"
+              className="h-10 cursor-pointer rounded-lg bg-[#7695EC] text-[14px] font-bold text-white transition-all hover:bg-[#5a78d1] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {editingCommentIndex !== null ? "Save Changes" : "Post comment"}
             </button>

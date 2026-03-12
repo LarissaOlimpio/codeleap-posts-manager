@@ -42,7 +42,7 @@ export default function DeleteModal({
           <div className="flex justify-end gap-4">
             <AlertDialog.Cancel asChild>
               <button
-                className="rounded-lg border border-[#999999] px-8 py-1.5 font-bold text-black transition-colors hover:bg-gray-50 disabled:opacity-50"
+                className="cursor-pointer rounded-lg border border-[#999999] px-8 py-1.5 font-bold text-black transition-colors hover:bg-gray-50 disabled:opacity-50"
                 disabled={deleteMutation.isPending}
               >
                 Cancel
@@ -53,7 +53,7 @@ export default function DeleteModal({
               <button
                 onClick={handleDelete}
                 disabled={deleteMutation.isPending}
-                className="rounded-lg bg-[#FF5151] px-8 py-1.5 font-bold text-white transition-colors hover:bg-[#d43f3f] disabled:cursor-not-allowed disabled:bg-[#CCCCCC]"
+                className="cursor-pointer rounded-lg bg-[#FF5151] px-8 py-1.5 font-bold text-white transition-colors hover:bg-[#d43f3f] disabled:cursor-not-allowed disabled:bg-[#CCCCCC]"
               >
                 {deleteMutation.isPending ? "Deleting..." : "Delete"}
               </button>
