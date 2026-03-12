@@ -7,23 +7,26 @@ A fully functional CRUD application developed as a technical challenge for CodeL
 This project was built using web development standards:
 
 * **React 18** with **TypeScript**: Ensuring robust type safety and component-based UI.
+* **TanStack Query (React Query)**: Powerful asynchronous state management for data fetching, caching, and synchronization between UI and API.
 * **TanStack Router**: For type-safe routing and seamless navigation.
-* **Zustand**: A lightweight state management solution for global user session control.
+* **Zustand**: A lightweight state management solution for global session control and local social interactions (likes/comments).
+* **React Mentions**: Integrated support for user tagging using `@username` patterns with custom overlay positioning.
 * **Radix UI**: High-quality primitives for accessible Modals (Dialog) and Confirmation Alerts (AlertDialog).
 * **Tailwind CSS**: Utility-first CSS for a responsive and "pixel-perfect" design.
-* **Intersection Observer API**: Native implementation for a high-performance Infinite Scroll.
+* **Intersection Observer API**: Native implementation for high-performance Infinite Scroll.
 
 ## ✨ Key Features
 
 * **Authentication Flow**: A dedicated signup screen where the username is persisted globally via Zustand.
-* **Full CRUD Implementation**:
-    * **Create**: Add new posts with immediate feed updates and loading states.
-    * **Read**: Real-time post listing fetched from a REST API.
+* **Advanced CRUD Implementation**:
+    * **Create**: Add new posts with automatic cache invalidation via TanStack Query.
+    * **Read**: Efficient post listing with **Infinite Scrolling**, loading subsequent pages automatically.
     * **Update**: Edit titles and content through an accessible Modal interface.
-    * **Delete**: Secure deletion with a confirmation dialog to prevent accidental data loss.
-* **Infinite Scrolling**: Automatic loading of subsequent pages as the user scrolls, providing a smooth UX.
-* **UI Feedback**: Integrated Spinners (Radix Themes) and disabled button states to guide the user during asynchronous actions.
-* **Clean Code Architecture**: Logic separation using a **Service Layer** for API calls and custom hooks for observers.
+    * **Delete**: Secure management of posts with a confirmation dialog to prevent accidental data loss.
+* **Social Interactions**:
+    * **Mentions System**: Ability to tag other users in posts and comments using a specialized UI component.
+    * **Comments & Likes**: Local persistent social interactions allowing users to engage, edit, and delete their own comments.
+* **Clean Code Architecture**: Logic separation using a **Service Layer** for API calls and **Custom Hooks** for mutations, data fetching, and observers.
 
 ## 🚀 Getting Started
 
