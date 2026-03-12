@@ -165,7 +165,7 @@ export default function PostItem({ post }: PostItemProps) {
                       : "Write a comment..."
                     : "Sign in to comment"
                 }
-                className={`min-h-20 w-full rounded-lg border p-3 text-[14px] focus:outline-[#7695EC] ${
+                className={`min-h-20 w-full resize-none rounded-lg border p-3 text-[14px] focus:outline-[#7695EC] ${
                   editingCommentIndex !== null
                     ? "border-[#7695EC] bg-[#7695EC]/5"
                     : "border-[#CCCCCC]"

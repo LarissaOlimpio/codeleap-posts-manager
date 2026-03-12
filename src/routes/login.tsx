@@ -36,6 +36,12 @@ function SignupComponent() {
             placeholder="username"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !isButtonDisabled) {
+                e.preventDefault();
+                handleEnter();
+              }
+            }}
             className="w-full rounded-lg border border-[#777777] px-3 py-2 placeholder:text-[#CCCCCC] focus:border-black focus:outline-none"
           />
         </div>
