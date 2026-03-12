@@ -2,6 +2,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import type { DataPost } from "../../types/DataPost";
 import { usePostMutations } from "../../hooks/usePostMutations";
+import { usePosts } from "../../hooks/usePost";
+import { MentionsInput, Mention } from "react-mentions";
+import styles from "../../style/mentionsBase.module.css";
 
 interface EditModalProps {
   post: DataPost;
@@ -48,6 +51,18 @@ export default function EditModal({
   const handleChange = (name: keyof typeof formData, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+  const { data } = usePosts();
+  const users =
+    data?.pages
+      .flatMap((p) => p.results)
+      .map((p) => ({
+        id: p.username,
+        display: p.username,
+      }))
+      .filter(
+        (value, index, self) =>
+          index === self.findIndex((t) => t.id === value.id),
+      ) || [];
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -73,15 +88,21 @@ export default function EditModal({
 
             <div className="flex flex-col gap-2">
               <label className="text-[16px] text-black">Content</label>
-              <textarea
-                name="content"
+              <MentionsInput
                 value={formData.content}
-                onChange={(e) => handleChange("content", e.target.value)}
-                placeholder="Content here"
-                rows={3}
-                className="w-full resize-none rounded-lg border border-[#777777] p-2 focus:outline-[#7695EC]"
+                onChange={(_, newValue) => handleChange("content", newValue)}
+                placeholder="Content here. Use @ to mention someone"
                 disabled={isLoading}
-              />
+                classNames={styles}
+              >
+                <Mention
+                  trigger="@"
+                  data={users}
+                  markup="@__display__"
+                  displayTransform={(display) => `@${display}`}
+                  className={styles.mentions__mention}
+                />
+              </MentionsInput>
             </div>
           </div>
 
