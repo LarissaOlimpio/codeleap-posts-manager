@@ -33,7 +33,7 @@ function SignupComponent() {
           <input
             id="username"
             type="text"
-            placeholder="John doe"
+            placeholder="username"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             className="w-full rounded-lg border border-[#777777] px-3 py-2 placeholder:text-[#CCCCCC] focus:border-black focus:outline-none"
