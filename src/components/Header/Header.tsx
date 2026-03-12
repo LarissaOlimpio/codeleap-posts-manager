@@ -8,7 +8,7 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
-    navigate({ to: "/signup" });
+    navigate({ to: "/login" });
   };
 
   return (

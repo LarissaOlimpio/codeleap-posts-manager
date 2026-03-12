@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useUserStore } from "../store/useUserStore";
 
-export const Route = createFileRoute("/signup")({
+export const Route = createFileRoute("/login")({
   component: SignupComponent,
 });
 

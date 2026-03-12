@@ -12,7 +12,7 @@ export const Route = createFileRoute("/")({
   beforeLoad: () => {
     const { username } = useUserStore.getState();
     if (!username) {
-      throw redirect({ to: "/signup" });
+      throw redirect({ to: "/login" });
     }
   },
   component: RouteComponent,
