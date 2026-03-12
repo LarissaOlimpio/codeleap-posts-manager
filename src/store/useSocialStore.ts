@@ -7,6 +7,8 @@ interface SocialState {
 
   toggleLike: (postId: number, username: string) => void;
   addComment: (postId: number, username: string, text: string) => void;
+  editComment: (postId: number, commentIndex: number, newText: string) => void;
+  deleteComment: (postId: number, commentIndex: number) => void;
 }
 export const useSocialStore = create<SocialState>()(
   persist(
@@ -36,7 +38,30 @@ export const useSocialStore = create<SocialState>()(
             [postId]: [...(state.comments[postId] || []), { username, text }],
           },
         })),
+      editComment: (postId: number, commentIndex: number, newText: string) => {
+        set((state) => {
+          const postComments = [...(state.comments[postId] || [])];
+          if (postComments[commentIndex]) {
+            postComments[commentIndex].text = newText;
+          }
+          return {
+            comments: { ...state.comments, [postId]: postComments },
+          };
+        });
+      },
+
+      deleteComment: (postId: number, commentIndex: number) => {
+        set((state) => {
+          const postComments = (state.comments[postId] || []).filter(
+            (_, index) => index !== commentIndex,
+          );
+          return {
+            comments: { ...state.comments, [postId]: postComments },
+          };
+        });
+      },
     }),
+
     { name: "@codeleap-social-data" },
   ),
 );
