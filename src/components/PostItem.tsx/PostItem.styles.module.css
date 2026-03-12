@@ -1,19 +1,17 @@
 .mentions__control {
   background-color: #fff;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 8px;
-  min-height: 100px;
+  min-height: 80px;
+  border: 1px solid #cccccc;
 }
-
 .mentions__input {
-  padding: 8px;
-  border: 1px solid #777777;
+  padding: 12px;
   border-radius: 8px;
   outline: none;
+  width: 100%;
 }
-
 .mentions__input:focus {
-  border-color: #7695ec;
   box-shadow: 0 0 0 1px #7695ec;
 }
 
@@ -28,14 +26,16 @@
 .mentions__suggestions__item {
   padding: 8px;
   cursor: pointer;
+  font-size: 14px;
 }
+
 .mentions__suggestions__item--focused {
   background-color: #f3f4f6;
 }
-
 .mentions__mention {
   background-color: rgba(118, 149, 236, 0.2);
   color: #7695ec;
-  font-weight: bold;
-  border-radius: 2px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 1px 2px;
 }

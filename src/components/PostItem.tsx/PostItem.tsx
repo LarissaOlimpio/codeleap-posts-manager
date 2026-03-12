@@ -7,6 +7,9 @@ import { useState } from "react";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import EditModal from "../EditModal/EditModal";
 import { useSocialStore } from "../../store/useSocialStore";
+import { MentionsInput, Mention } from "react-mentions";
+import { usePosts } from "../../hooks/usePost";
+import styles from "./PostItem.styles.module.css";
 
 interface PostItemProps {
   post: DataPost;
@@ -55,7 +58,18 @@ export default function PostItem({ post }: PostItemProps) {
     setEditingCommentIndex(null);
     setCommentText("");
   };
-
+  const { data } = usePosts();
+  const users =
+    data?.pages
+      .flatMap((p) => p.results)
+      .map((p) => ({
+        id: p.username,
+        display: p.username,
+      }))
+      .filter(
+        (value, index, self) =>
+          index === self.findIndex((t) => t.id === value.id),
+      ) || [];
   return (
     <article className="overflow-hidden rounded-2xl border border-[#CCCCCC] bg-white">
       <header className="flex h-17.5 items-center justify-between bg-[#7695EC] px-6 text-white">
@@ -155,23 +169,27 @@ export default function PostItem({ post }: PostItemProps) {
 
           <div className="flex flex-col gap-2">
             <div className="relative">
-              <textarea
+              <MentionsInput
                 value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
+                onChange={(_, newValue) => setCommentText(newValue)}
                 placeholder={
                   loggedUser
                     ? editingCommentIndex !== null
                       ? "Editing comment..."
-                      : "Write a comment..."
+                      : "Write a comment... use @ to mention someone"
                     : "Sign in to comment"
                 }
-                className={`min-h-20 w-full resize-none rounded-lg border p-3 text-[14px] focus:outline-[#7695EC] ${
-                  editingCommentIndex !== null
-                    ? "border-[#7695EC] bg-[#7695EC]/5"
-                    : "border-[#CCCCCC]"
-                }`}
                 disabled={!loggedUser}
-              />
+                classNames={styles}
+              >
+                <Mention
+                  trigger="@"
+                  data={users}
+                  markup="@__display__"
+                  displayTransform={(display) => `@${display}`}
+                  className={styles.mention}
+                />
+              </MentionsInput>
               {editingCommentIndex !== null && (
                 <button
                   onClick={cancelEdit}
