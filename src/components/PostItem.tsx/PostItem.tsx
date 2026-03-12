@@ -9,7 +9,7 @@ import EditModal from "../EditModal/EditModal";
 import { useSocialStore } from "../../store/useSocialStore";
 import { MentionsInput, Mention } from "react-mentions";
 import { usePosts } from "../../hooks/usePost";
-import styles from "./PostItem.styles.module.css";
+import styles from "../../style/mentionsBase.module.css";
 
 interface PostItemProps {
   post: DataPost;
@@ -71,8 +71,8 @@ export default function PostItem({ post }: PostItemProps) {
           index === self.findIndex((t) => t.id === value.id),
       ) || [];
   return (
-    <article className="overflow-hidden rounded-2xl border border-[#CCCCCC] bg-white">
-      <header className="flex h-17.5 items-center justify-between bg-[#7695EC] px-6 text-white">
+    <article className="rounded-2xl border border-[#CCCCCC] bg-white">
+      <header className="flex h-17.5 items-center justify-between rounded-t-[15px] bg-[#7695EC] px-6 text-white">
         <h3 className="max-w-[80%] truncate text-[22px] font-bold">
           {post.title}
         </h3>
@@ -168,7 +168,7 @@ export default function PostItem({ post }: PostItemProps) {
           )}
 
           <div className="flex flex-col gap-2">
-            <div className="relative">
+            <div className={`relative ${styles.mentionsComments}`}>
               <MentionsInput
                 value={commentText}
                 onChange={(_, newValue) => setCommentText(newValue)}
@@ -187,7 +187,7 @@ export default function PostItem({ post }: PostItemProps) {
                   data={users}
                   markup="@__display__"
                   displayTransform={(display) => `@${display}`}
-                  className={styles.mention}
+                  className={styles.mentionsComments}
                 />
               </MentionsInput>
               {editingCommentIndex !== null && (

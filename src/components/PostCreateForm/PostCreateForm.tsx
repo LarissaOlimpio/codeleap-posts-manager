@@ -3,7 +3,7 @@ import { useUserStore } from "../../store/useUserStore";
 import { usePostMutations } from "../../hooks/usePostMutations";
 import { MentionsInput, Mention } from "react-mentions";
 import { usePosts } from "../../hooks/usePost";
-import styles from "./PostCreateForm.styles.module.css";
+import styles from "../../style/mentionsBase.module.css";
 
 interface PostData {
   title: string;
