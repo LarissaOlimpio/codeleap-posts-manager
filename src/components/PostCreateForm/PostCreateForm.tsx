@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useUserStore } from "../../store/useUserStore";
 import { usePostMutations } from "../../hooks/usePostMutations";
 import { MentionsInput, Mention } from "react-mentions";
-import { usePosts } from "../../hooks/usePost";
+import { useUsersMention } from "../../hooks/useUsersMention";
 import styles from "../../style/mentionsBase.module.css";
 
 interface PostData {
@@ -19,7 +19,7 @@ export default function PostCreateForm() {
   const username = useUserStore((state) => state.username);
 
   const { createMutation } = usePostMutations();
-
+  const { users } = useUsersMention();
   const isLoading = createMutation.isPending;
 
   const handleChange = (
@@ -55,19 +55,6 @@ export default function PostCreateForm() {
   const handleContentChange = (value: string) => {
     setFormData((prev) => ({ ...prev, content: value }));
   };
-
-  const { data } = usePosts();
-  const users =
-    data?.pages
-      .flatMap((p) => p.results)
-      .map((p) => ({
-        id: p.username,
-        display: p.username,
-      }))
-      .filter(
-        (value, index, self) =>
-          index === self.findIndex((t) => t.id === value.id),
-      ) || [];
 
   return (
     <section className="flex flex-col gap-6 rounded-2xl border border-[#CCCCCC] bg-white p-6">

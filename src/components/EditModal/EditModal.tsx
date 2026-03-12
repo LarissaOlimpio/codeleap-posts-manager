@@ -2,7 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 import type { DataPost } from "../../types/DataPost";
 import { usePostMutations } from "../../hooks/usePostMutations";
-import { usePosts } from "../../hooks/usePost";
+import { useUsersMention } from "../../hooks/useUsersMention";
 import { MentionsInput, Mention } from "react-mentions";
 import styles from "../../style/mentionsBase.module.css";
 
@@ -23,7 +23,7 @@ export default function EditModal({
   });
 
   const { updateMutation } = usePostMutations();
-
+  const { users } = useUsersMention();
   const isLoading = updateMutation.isPending;
 
   const isButtonDisabled =
@@ -51,18 +51,6 @@ export default function EditModal({
   const handleChange = (name: keyof typeof formData, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  const { data } = usePosts();
-  const users =
-    data?.pages
-      .flatMap((p) => p.results)
-      .map((p) => ({
-        id: p.username,
-        display: p.username,
-      }))
-      .filter(
-        (value, index, self) =>
-          index === self.findIndex((t) => t.id === value.id),
-      ) || [];
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
