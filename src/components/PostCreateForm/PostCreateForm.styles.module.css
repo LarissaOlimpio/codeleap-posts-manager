@@ -31,10 +31,3 @@
 .mentions__suggestions__item--focused {
   background-color: #f3f4f6;
 }
-
-.mentions__mention {
-  background-color: rgba(118, 149, 236, 0.2);
-  color: #7695ec;
-  font-weight: bold;
-  border-radius: 2px;
-}
