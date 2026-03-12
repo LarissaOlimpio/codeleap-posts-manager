@@ -12,7 +12,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-20 flex h-20 items-center justify-between bg-[#7695EC] p-6">
+    <header className="relative top-0 z-20 flex h-20 items-center justify-between bg-[#7695EC] p-6">
       <h1 className="text-[22px] font-bold text-white">CodeLeap Network</h1>
 
       <div className="flex items-center gap-4">
