@@ -73,7 +73,7 @@ export default function PostItem({ post }: PostItemProps) {
   return (
     <article className="rounded-2xl border border-[#CCCCCC] bg-white">
       <header className="flex h-17.5 items-center justify-between rounded-t-[15px] bg-[#7695EC] px-6 text-white">
-        <h3 className="max-w-[80%] truncate text-[22px] font-bold">
+        <h3 className="break-word mr-2 max-w-[70%] text-[18px] leading-tight font-bold sm:text-[22px]">
           {post.title}
         </h3>
         {isMyPost && (
