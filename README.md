@@ -62,4 +62,13 @@ src/
  └── utils/          # Utility functions for date formatting 
 
  ```
+
+## 🎬 Preview
+
+A quick look at how the application works:
+
+https://github.com/user-attachments/assets/f5a4bf00-1a96-4367-9b8d-4ff6737092d3
+
+
+
 Developed with ❤️ by Larissa Olimpio
