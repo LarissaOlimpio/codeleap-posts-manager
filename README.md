@@ -34,7 +34,7 @@ Follow these steps to run the project locally:
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/LarissaOlimpio/codeleap-posts-manager.git](https://github.com/your-username/codeleap-network.git)
+    git clone https://github.com/LarissaOlimpio/codeleap-posts-manager.git
     ```
 
 2.  **Install dependencies:**
