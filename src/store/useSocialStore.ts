@@ -38,7 +38,7 @@ export const useSocialStore = create<SocialState>()(
             [postId]: [...(state.comments[postId] || []), { username, text }],
           },
         })),
-      editComment: (postId: number, commentIndex: number, newText: string) => {
+      editComment: (postId, commentIndex, newText) => {
         set((state) => {
           const postComments = [...(state.comments[postId] || [])];
           if (postComments[commentIndex]) {
@@ -50,7 +50,7 @@ export const useSocialStore = create<SocialState>()(
         });
       },
 
-      deleteComment: (postId: number, commentIndex: number) => {
+      deleteComment: (postId, commentIndex) => {
         set((state) => {
           const postComments = (state.comments[postId] || []).filter(
             (_, index) => index !== commentIndex,
